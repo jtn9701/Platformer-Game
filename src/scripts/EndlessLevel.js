@@ -8,16 +8,31 @@ class EndlessLevel extends Phaser.Scene {
 
   // Preload external assets
   preload() {
+    let ATTACK_FRAME = {
+      frameWidth: 32,
+      frameHeight: 32,
+    };
     this.load.path = "src/assets/";
+    // Tile Assets
     this.load.tilemapTiledJSON(this.map_key, this.map_json);
     const tile_size = { frameWidth: 32, frameHeight: 32 };
     this.load.spritesheet("tiles", "tiles.png", tile_size);
+    // Player Assets
     this.load.image("player", "player.png");
+    this.load.spritesheet("attack-up", "up-attack-temp.png", ATTACK_FRAME);
+    this.load.spritesheet("attack-down", "down-attack-temp.png", ATTACK_FRAME);
+    this.load.spritesheet("attack-left", "left-attack-temp.png", ATTACK_FRAME);
+    this.load.spritesheet(
+      "attack-right",
+      "right-attack-temp.png",
+      ATTACK_FRAME
+    );
   }
 
   // Create game data
   create() {
     this.create_map();
+    this.create_attack_animation();
     this.create_player();
     this.create_gravity();
     this.create_camera();
@@ -25,8 +40,8 @@ class EndlessLevel extends Phaser.Scene {
   }
 
   // Update game data
-  update() {
-    this.update_player();
+  update(time) {
+    this.update_player(time);
     this.update_if_game_over();
   }
 
@@ -72,9 +87,33 @@ class EndlessLevel extends Phaser.Scene {
     this.physics.add.collider(this.player, this.groundLayer);
   }
 
+  create_attack_animation() {
+    let FRAME_INFO = { frameRate: 60, repeat: 0 };
+    this.anims.create({
+      ...FRAME_INFO,
+      key: "attack-up",
+      frames: this.anims.generateFrameNumbers("attack-up"),
+    });
+    this.anims.create({
+      ...FRAME_INFO,
+      key: "attack-down",
+      frames: this.anims.generateFrameNumbers("attack-down"),
+    });
+    this.anims.create({
+      ...FRAME_INFO,
+      key: "attack-left",
+      frames: this.anims.generateFrameNumbers("attack-left"),
+    });
+    this.anims.create({
+      ...FRAME_INFO,
+      key: "attack-right",
+      frames: this.anims.generateFrameNumbers("attack-right"),
+    });
+  }
   //######################################UPDATES#########################################//
-  update_player() {
+  update_player(time) {
     this.player.move();
+    this.player.attack(time);
   }
 
   update_if_game_over() {}
