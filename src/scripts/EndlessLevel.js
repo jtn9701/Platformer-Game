@@ -27,6 +27,8 @@ class EndlessLevel extends Phaser.Scene {
       "right-attack-temp.png",
       ATTACK_FRAME
     );
+    // Enemy Assets
+    this.load.image("enemy", "enemy.png");
   }
 
   // Create game data
@@ -34,6 +36,7 @@ class EndlessLevel extends Phaser.Scene {
     this.create_map();
     this.create_attack_animation();
     this.create_player();
+    this.create_enemies();
     this.create_gravity();
     this.create_camera();
     this.create_collisions();
@@ -42,7 +45,7 @@ class EndlessLevel extends Phaser.Scene {
   // Update game data
   update(time) {
     this.update_player(time);
-    this.update_if_game_over();
+    this.game_over();
   }
 
   //--------------------------------------HELPERS-----------------------------------------//
@@ -85,10 +88,18 @@ class EndlessLevel extends Phaser.Scene {
 
   create_collisions() {
     this.physics.add.collider(this.player, this.groundLayer);
+    this.physics.add.collider(this.group_enemies, this.groundLayer);
+    this.physics.add.collider(
+      this.player,
+      this.group_enemies,
+      this.game_over,
+      null,
+      this
+    );
   }
 
   create_attack_animation() {
-    let FRAME_INFO = { frameRate: 60, repeat: 0 };
+    let FRAME_INFO = { frameRate: 30, repeat: 0 };
     this.anims.create({
       ...FRAME_INFO,
       key: "attack-up",
@@ -110,11 +121,31 @@ class EndlessLevel extends Phaser.Scene {
       frames: this.anims.generateFrameNumbers("attack-right"),
     });
   }
+
+  create_enemies() {
+    this.group_enemies = [];
+    let enemy_tiles = this.map.filterObjects(
+      "items",
+      (obj) => obj.name === "enemy"
+    );
+    for (let tile of enemy_tiles) {
+      let enemy_config = { x: tile.x, y: tile.y };
+      let enemy = new Enemy(this, enemy_config);
+      this.group_enemies.push(enemy);
+    }
+  }
   //######################################UPDATES#########################################//
   update_player(time) {
     this.player.move();
     this.player.attack(time);
   }
 
-  update_if_game_over() {}
+  game_over(player = null, hazard = null) {
+    if (this.player > this.map.heightInPixels) {
+      this.scene.restart();
+    }
+    if (hazard !== null) {
+      this.scene.restart();
+    }
+  }
 }
