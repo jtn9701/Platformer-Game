@@ -40,6 +40,7 @@ class EndlessLevel extends Phaser.Scene {
     this.create_gravity();
     this.create_camera();
     this.create_collisions();
+    this.create_player_attack_collision_handler();
   }
 
   // Update game data
@@ -69,6 +70,7 @@ class EndlessLevel extends Phaser.Scene {
 
   create_player() {
     this.player = new Player(this);
+    this.player_attacks = this.physics.add.group();
   }
 
   create_gravity() {
@@ -123,7 +125,7 @@ class EndlessLevel extends Phaser.Scene {
   }
 
   create_enemies() {
-    this.group_enemies = [];
+    this.group_enemies = this.physics.add.group();
     let enemy_tiles = this.map.filterObjects(
       "items",
       (obj) => obj.name === "enemy"
@@ -131,17 +133,39 @@ class EndlessLevel extends Phaser.Scene {
     for (let tile of enemy_tiles) {
       let enemy_config = { x: tile.x, y: tile.y };
       let enemy = new Enemy(this, enemy_config);
-      this.group_enemies.push(enemy);
+      this.group_enemies.add(enemy);
     }
   }
+
+  create_player_attack_collision_handler() {
+    this.physics.add.overlap(
+      this.player_attacks,
+      this.group_enemies,
+      (attack, enemy) => {
+        if (enemy.isDead === true) {
+          return;
+        }
+        enemy.isDead = true;
+
+        if (enemy.body) enemy.body.enable = false;
+
+        enemy.destroy();
+
+        if (attack && attack.destroy) attack.destroy();
+      },
+      null,
+      this
+    );
+  }
+
   //######################################UPDATES#########################################//
   update_player(time) {
     this.player.move();
     this.player.attack(time);
   }
 
-  game_over(player = null, hazard = null) {
-    if (this.player > this.map.heightInPixels) {
+  game_over(hazard = null) {
+    if (this.player.y > this.map.heightInPixels) {
       this.scene.restart();
     }
     if (hazard !== null) {

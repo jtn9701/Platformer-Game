@@ -54,20 +54,28 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     if (time - this.last_attack > ATTACK_DELAY) {
       if (this.attack_keys.up.isDown) {
         const position = { x: this.x, y: this.y - ATTACK_POSITION_OFFSET };
-        const attack = new PlayerAttack(this.scene, position, "attack-up");
+        this.scene.player_attacks.add(
+          new PlayerAttack(this.scene, position, "attack-up")
+        );
       }
       // TODO: will make this one only possible if in air
       if (this.attack_keys.down.isDown) {
         const position = { x: this.x, y: this.y + ATTACK_POSITION_OFFSET };
-        const attack = new PlayerAttack(this.scene, position, "attack-down");
+        this.scene.player_attacks.add(
+          new PlayerAttack(this.scene, position, "attack-down")
+        );
       }
       if (this.attack_keys.left.isDown) {
         const position = { x: this.x - ATTACK_POSITION_OFFSET, y: this.y };
-        const attack = new PlayerAttack(this.scene, position, "attack-left");
+        this.scene.player_attacks.add(
+          new PlayerAttack(this.scene, position, "attack-left")
+        );
       }
       if (this.attack_keys.right.isDown) {
         const position = { x: this.x + ATTACK_POSITION_OFFSET, y: this.y };
-        const attack = new PlayerAttack(this.scene, position, "attack-right");
+        this.scene.player_attacks.add(
+          new PlayerAttack(this.scene, position, "attack-right")
+        );
       }
 
       this.last_attack = time;
