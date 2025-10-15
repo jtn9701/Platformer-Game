@@ -59,7 +59,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         );
       }
       // TODO: will make this one only possible if in air
-      if (this.attack_keys.down.isDown) {
+      if (!this.body.blocked.down && this.attack_keys.down.isDown) {
         const position = { x: this.x, y: this.y + ATTACK_POSITION_OFFSET };
         this.scene.player_attacks.add(
           new PlayerAttack(this.scene, position, "attack-down")
