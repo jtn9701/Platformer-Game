@@ -74,7 +74,7 @@ class EndlessLevel extends Phaser.Scene {
   }
 
   create_gravity() {
-    this.physics.world.gravity.y = 600;
+    this.physics.world.gravity.y = 400;
   }
 
   create_camera() {
@@ -148,6 +148,20 @@ class EndlessLevel extends Phaser.Scene {
         enemy.isDead = true;
 
         if (enemy.body) enemy.body.enable = false;
+
+        // Upward bounce with down attack on enemy
+        if (
+          attack.anims.currentAnim.key === "attack-down" &&
+          attack &&
+          attack.anims &&
+          attack.anims.currentAnim
+        ) {
+          // Check if player exist
+          if (this.player && this.player.body) {
+            const BOUNCE_VELOCITY = -350;
+            this.player.body.velocity.y = BOUNCE_VELOCITY;
+          }
+        }
 
         enemy.destroy();
 
