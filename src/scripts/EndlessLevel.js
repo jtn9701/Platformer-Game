@@ -46,6 +46,7 @@ class EndlessLevel extends Phaser.Scene {
   // Update game data
   update(time) {
     this.update_player(time);
+    this.update_enemy(time);
     this.game_over();
   }
 
@@ -134,6 +135,9 @@ class EndlessLevel extends Phaser.Scene {
       let enemy_config = { x: tile.x, y: tile.y };
       let enemy = new Enemy(this, enemy_config);
       this.group_enemies.add(enemy);
+      // Start Enemy movement
+      enemy.body.velocity.x = -enemy.speed;
+      enemy.body.bounce.x = 1;
     }
   }
 
@@ -176,6 +180,12 @@ class EndlessLevel extends Phaser.Scene {
   update_player(time) {
     this.player.move();
     this.player.attack(time);
+  }
+
+  update_enemy(time) {
+    this.group_enemies.getChildren().forEach((enemy) => {
+      enemy.update_ai(time);
+    });
   }
 
   game_over(hazard = null) {
