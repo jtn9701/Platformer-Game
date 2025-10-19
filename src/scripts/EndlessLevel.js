@@ -41,12 +41,14 @@ class EndlessLevel extends Phaser.Scene {
     this.create_camera();
     this.create_collisions();
     this.create_player_attack_collision_handler();
+    this.create_score_manager();
   }
 
   // Update game data
   update(time) {
     this.update_player(time);
     this.update_enemy(time);
+    this.update_score(time);
     this.game_over();
   }
 
@@ -176,12 +178,17 @@ class EndlessLevel extends Phaser.Scene {
         }
 
         enemy.destroy();
+        this.score_manager.increment_num_enemies_killed();
 
         if (attack && attack.destroy) attack.destroy();
       },
       null,
       this
     );
+  }
+
+  create_score_manager() {
+    this.score_manager = new ScoreManager(0);
   }
 
   //######################################UPDATES#########################################//
@@ -196,12 +203,22 @@ class EndlessLevel extends Phaser.Scene {
     });
   }
 
+  update_score() {
+    this.score_manager.update_time_alive(1);
+  }
+
   game_over(hazard = null) {
-    if (this.player.y > this.map.heightInPixels) {
+    const game_over_actions = () => {
+      console.log(this.score_manager.get_final_score());
+      this.score_manager.reset();
       this.scene.restart();
+    };
+
+    if (this.player.y > this.map.heightInPixels) {
+      game_over_actions();
     }
     if (hazard !== null) {
-      this.scene.restart();
+      game_over_actions();
     }
   }
 }

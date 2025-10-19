@@ -1,10 +1,10 @@
 class EnemySpawnManager {
   constructor(scene, config = {}) {
     this.scene = scene;
-    this.min_interval = config.minInterval || 1000;
-    this.max_interval = config.maxInterval || 5000;
+    this.min_interval = config.minInterval || 100;
+    this.max_interval = config.maxInterval || 1000;
 
-    this.max_enemies = config.maxEnemies || 10;
+    this.max_enemies = config.maxEnemies || 50;
     this.spawn_callback = config.spawnCallback;
     this.bounds = config.bounds || {
       x: 0,
