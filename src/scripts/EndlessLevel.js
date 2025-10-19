@@ -131,6 +131,8 @@ class EndlessLevel extends Phaser.Scene {
     const spawnCallback = (x, y) => {
       if (typeof Enemy === "function") {
         const new_enemy = new Enemy(this, { x: x, y: y });
+        // Start Enemy movement
+        new_enemy.body.velocity.x = -new_enemy.speed;
         this.add.existing(new_enemy);
         this.group_enemies.add(new_enemy);
         return new_enemy;

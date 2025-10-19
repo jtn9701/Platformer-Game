@@ -28,6 +28,8 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         this.body.velocity.x = this.speed;
       } else if (this.body.blocked.right) {
         this.body.velocity.x = -this.speed;
+      } else {
+        this.body.velocity.x = -this.speed;
       }
     };
 
