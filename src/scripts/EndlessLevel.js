@@ -127,18 +127,24 @@ class EndlessLevel extends Phaser.Scene {
 
   create_enemies() {
     this.group_enemies = this.physics.add.group();
-    let enemy_tiles = this.map.filterObjects(
-      "items",
-      (obj) => obj.name === "enemy"
-    );
-    for (let tile of enemy_tiles) {
-      let enemy_config = { x: tile.x, y: tile.y };
-      let enemy = new Enemy(this, enemy_config);
-      this.group_enemies.add(enemy);
-      // Start Enemy movement
-      enemy.body.velocity.x = -enemy.speed;
-      enemy.body.bounce.x = 1;
-    }
+
+    const spawnCallback = (x, y) => {
+      if (typeof Enemy === "function") {
+        const new_enemy = new Enemy(this, { x: x, y: y });
+        this.add.existing(new_enemy);
+        this.group_enemies.add(new_enemy);
+        return new_enemy;
+      }
+      return null;
+    };
+
+    const bounds = { map: this.map, layer: this.groundLayer };
+    this.enemy_spawn_manager = new EnemySpawnManager(this, {
+      bounds: bounds,
+      spawnCallback: spawnCallback,
+    });
+
+    this.enemy_spawn_manager.start_spawn_loop();
   }
 
   create_player_attack_collision_handler() {
