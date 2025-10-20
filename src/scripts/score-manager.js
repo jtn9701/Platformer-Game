@@ -6,7 +6,7 @@ class ScoreManager {
   }
 
   get_final_score() {
-    return 0.2 * this.num_enemies_killed * (this.time_alive / 100);
+    return 0.2 * this.num_enemies_killed * (this.time_alive / 10);
   }
 
   update_time_alive(current_time) {
