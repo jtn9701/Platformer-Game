@@ -11,7 +11,8 @@ config.height = 32 * 16; // 32 px/tile * 16 tile/world
 config.pixelArt = true;
 
 // Scenes in this game
-config.scene = [EndlessLevel];
+//config.scene = [EndlessLevel];
+config.scene = [TitleScene, HowToPlay, Credits, EndlessLevel];
 
 // Physics: collisions and gravity
 config.physics = { default: "arcade" };
