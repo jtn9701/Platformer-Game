@@ -3,14 +3,26 @@ class HowToPlay extends Phaser.Scene {
     super('howto');
   }
 
+  preload(){
+    // ensure path matches project layout
+    this.load.path = 'src/assets/';
+    // use a matching key for the how-to scene
+    this.load.image('howto-bg', 'dark-mountain-forest-2.png');
+    }
+
   create() {
-    const width = this.game.config.width;
+  const bg = this.add.image(0, 0, 'howto-bg').setOrigin(0);
+    bg.setDisplaySize(this.cameras.main.width, this.cameras.main.height);
+    bg.setScrollFactor(0);
+    bg.setDepth(-1);
+
+    const width= this.game.config.width;
     const height = this.game.config.height;
 
     this.add.text(width / 2, 60, 'How To Play', { fontSize: '36px', fill: '#FFFFFF' }).setOrigin(0.5);
 
     const lines = [
-      'Use Arrow keys to move your player.',
+      'Use WASD to move your character.',
       'Press Spacebar to attack in the facing direction.',
       'Defeat enemies and survive as long as you can.',
       'Collect points for each enemy defeated.'

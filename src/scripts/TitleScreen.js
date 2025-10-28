@@ -3,7 +3,18 @@ class TitleScene extends Phaser.Scene {
         super('title'); // Register scene with key 'title'
     }
 
+    preload(){
+        // ensure path matches project layout (assets live in src/assets)
+        this.load.path = 'src/assets/';
+        this.load.image('title-bg', 'dark-mountain-forest-1.png');
+    }
+
     create() {
+        const bg = this.add.image(0, 0, 'title-bg').setOrigin(0);
+        bg.setDisplaySize(this.cameras.main.width, this.cameras.main.height);
+        bg.setScrollFactor(0);
+        bg.setDepth(-1);
+
         this.create_title();
         this.create_game_data();
         this.create_topscore();
@@ -59,11 +70,6 @@ class TitleScene extends Phaser.Scene {
             align: 'center'
         }).setOrigin(0.5);
 
-        // Start prompt
-        this.add.text(width / 2, height * 2 / 3, 'Press SPACE to Start', {
-            fontSize: '24px',
-            fill: '#FFFF00'
-        }).setOrigin(0.5);
     }
 
     create_game_data() {

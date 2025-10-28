@@ -14,6 +14,8 @@ config.pixelArt = true;
 
 // Scenes in this game
 //config.scene = [EndlessLevel];
+// Register scenes: TitleScene, HowToPlay, Credits are defined as global-class scripts;
+// EndlessLevel is an ES module and was imported above.
 config.scene = [TitleScene, HowToPlay, Credits, EndlessLevel];
 
 // Physics: collisions and gravity
