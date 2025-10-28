@@ -1,3 +1,5 @@
+import { EndlessLevel } from "./EndlessLevel.js";
+
 const config = new Object();
 
 // HTML Rendering API

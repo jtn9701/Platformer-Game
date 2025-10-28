@@ -1,3 +1,5 @@
+import { LeaderboardManager } from "./leaderboard-manager.js";
+
 class EndlessLevel extends Phaser.Scene {
   constructor(key = "Endless") {
     super(key);
@@ -42,6 +44,7 @@ class EndlessLevel extends Phaser.Scene {
     this.create_collisions();
     this.create_player_attack_collision_handler();
     this.create_score_manager();
+    this.create_leaderboard_manager();
   }
 
   // Update game data
@@ -191,6 +194,11 @@ class EndlessLevel extends Phaser.Scene {
     this.score_manager = new ScoreManager(0);
   }
 
+  create_leaderboard_manager() {
+    this.leader_board_manager = new LeaderboardManager();
+    console.log(this.leader_board_manager.get_top_scorers());
+  }
+
   //######################################UPDATES#########################################//
   update_player(time) {
     this.player.move();
@@ -210,6 +218,9 @@ class EndlessLevel extends Phaser.Scene {
   game_over(hazard = null) {
     const game_over_actions = () => {
       console.log(this.score_manager.get_final_score());
+      this.leader_board_manager.add_new_top_scorer(
+        this.score_manager.get_final_score()
+      );
       this.score_manager.reset();
       this.scene.restart();
     };
@@ -222,3 +233,5 @@ class EndlessLevel extends Phaser.Scene {
     }
   }
 }
+
+export { EndlessLevel };
