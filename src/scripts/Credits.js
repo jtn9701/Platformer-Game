@@ -23,10 +23,18 @@ class Credits extends Phaser.Scene {
     const lines = [
       'Game: Platformer Game',
       'Created by: Jason Nguyen and Johnny Vu',
-      'Art: AI',
+      'Art: AI and ufotable (Kimetsu no Yaiba)',
     ];
 
-    this.add.text(width / 2, height / 3, lines.join('\n\n'), { fontSize: '20px', fill: '#FFFFFF', align: 'center' }).setOrigin(0.5);
+  // Create the multiline credits text and a translucent black background behind it
+  const content = this.add.text(width / 2, height / 3, lines.join('\n\n'), { fontSize: '20px', fill: '#FFFFFF', align: 'center' }).setOrigin(0.5);
+  const padding = 16;
+  const bounds = content.getBounds();
+  const rect = this.add.rectangle(bounds.centerX, bounds.centerY, bounds.width + padding * 2, bounds.height + padding * 2, 0x000000, 0.6);
+  rect.setOrigin(0.5);
+  rect.setScrollFactor(0);
+  content.setScrollFactor(0);
+  rect.setDepth(content.depth - 1);
 
     const back = this.add.text(width / 2, height - 80, 'Back', { fontSize: '24px', fill: '#FFFFFF' }).setOrigin(0.5).setInteractive({ useHandCursor: true });
     back.on('pointerdown', () => this.scene.start('title'));

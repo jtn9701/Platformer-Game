@@ -17,6 +17,12 @@ class ScoreManager {
     this.num_enemies_killed++;
   }
 
+  // Score increments only on enemy kills
+  get_display_score() {
+    // return number of enemies killed as the in-game score
+    return this.num_enemies_killed;
+  }
+
   reset() {
     this.time_alive = 0;
     this.num_enemies_killed = 0;

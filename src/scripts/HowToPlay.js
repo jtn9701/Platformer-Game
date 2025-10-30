@@ -23,19 +23,31 @@ class HowToPlay extends Phaser.Scene {
 
     const lines = [
       'Use WASD to move your character.',
+      'Use ARROW keys to attack.',
       'Press Spacebar to attack in the facing direction.',
       'Defeat enemies and survive as long as you can.',
       'Collect points for each enemy defeated.'
     ];
 
-    this.add.text(width / 2, height / 3, lines.join('\n\n'), { fontSize: '20px', fill: '#FFFFFF', align: 'center' }).setOrigin(0.5);
+  // Create the multiline text and a translucent black background behind it
+  const content = this.add.text(width / 2, height / 3, lines.join('\n\n'), { fontSize: '20px', fill: '#FFFFFF', align: 'center' }).setOrigin(0.5);
+  // Measure and add background rectangle with padding
+  const padding = 16;
+  const bounds = content.getBounds();
+  const rect = this.add.rectangle(bounds.centerX, bounds.centerY, bounds.width + padding * 2, bounds.height + padding * 2, 0x000000, 0.6);
+  rect.setOrigin(0.5);
+  // Keep UI fixed to camera
+  rect.setScrollFactor(0);
+  content.setScrollFactor(0);
+  // Ensure rectangle sits behind the text
+  rect.setDepth(content.depth - 1);
 
-    const back = this.add.text(width / 2, height - 80, 'Back', { fontSize: '24px', fill: '#FFFFFF' }).setOrigin(0.5).setInteractive({ useHandCursor: true });
+  const back = this.add.text(width / 2, height - 80, 'Back', { fontSize: '24px', fill: '#FFFFFF' }).setOrigin(0.5).setInteractive({ useHandCursor: true });
     back.on('pointerdown', () => this.scene.start('title'));
     back.on('pointerover', () => back.setStyle({ fill: '#FFFF00' }));
     back.on('pointerout', () => back.setStyle({ fill: '#FFFFFF' }));
 
-    // Keyboard: ESC returns to title
+    // ESC returns to title
     this.input.keyboard.on('keydown-ESC', () => { this.scene.start('title'); });
   }
 }

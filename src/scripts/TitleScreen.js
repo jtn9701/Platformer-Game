@@ -20,13 +20,13 @@ class TitleScene extends Phaser.Scene {
         this.create_topscore();
         this.create_buttons();
 
-        // Keyboard shortcuts: SPACE to play, ESC to open credits
+        // SPACE to play, ESC to open credits
         this.input.keyboard.on('keydown-SPACE', () => { this.scene.start('Endless'); });
         this.input.keyboard.on('keydown-ESC', () => { this.scene.start('credits'); });
 
     }
 
-    // Create interactive menu buttons: Play, How To Play, Credits
+    // Menu buttons: Play, How To Play, Credits
     create_buttons() {
         const width = this.game.config.width;
         const height = this.game.config.height;
@@ -58,18 +58,10 @@ class TitleScene extends Phaser.Scene {
         const height = this.game.config.height;
 
         // Game Title
-        this.add.text(width / 2, height / 3, 'DODGER GAME', {
+        this.add.text(width / 2, height / 3, 'PLATFORMER GAME', {
             fontSize: '48px',
             fill: '#FFFFFF'
         }).setOrigin(0.5);
-
-        // Instructions
-        this.add.text(width / 2, height / 2, 'Arrow Keys to Move\nSpacebar to Fire', {
-            fontSize: '24px',
-            fill: '#FFFFFF',
-            align: 'center'
-        }).setOrigin(0.5);
-
     }
 
     create_game_data() {

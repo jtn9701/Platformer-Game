@@ -15,6 +15,7 @@ class EndlessLevel extends Phaser.Scene {
       frameHeight: 32,
     };
     this.load.path = "src/assets/";
+    this.load.image("background", "castle2.jpg");
     // Tile Assets
     this.load.tilemapTiledJSON(this.map_key, this.map_json);
     const tile_size = { frameWidth: 32, frameHeight: 32 };
@@ -35,6 +36,11 @@ class EndlessLevel extends Phaser.Scene {
 
   // Create game data
   create() {
+    const bg = this.add.image(0, 0, "background").setOrigin(0);
+    bg.setDisplaySize(this.cameras.main.width, this.cameras.main.height);
+    bg.setScrollFactor(0);
+    bg.setDepth(-2);
+
     this.create_map();
     this.create_attack_animation();
     this.create_player();
@@ -192,6 +198,15 @@ class EndlessLevel extends Phaser.Scene {
 
   create_score_manager() {
     this.score_manager = new ScoreManager(0);
+
+    // Score counter text on upper right side of screen
+    const cam = this.cameras.main;
+    const x = cam.width - 10; // 10px from right edge
+    const y = 10; // 10px from top
+    this.scoreText = this.add
+      .text(x, y, `Score: 0`, { fontSize: '20px', fill: '#00ff3cff' })
+      .setOrigin(1, 0)
+      .setScrollFactor(0);
   }
 
   create_leaderboard_manager() {
@@ -213,6 +228,12 @@ class EndlessLevel extends Phaser.Scene {
 
   update_score() {
     this.score_manager.update_time_alive(1);
+    // Update on-screen score display
+    if (this.scoreText && this.score_manager) {
+      // Display score that increments only when enemies are killed
+      const displayScore = this.score_manager.get_display_score();
+      this.scoreText.setText(`Score: ${displayScore}`);
+    }
   }
 
   game_over(hazard = null) {
