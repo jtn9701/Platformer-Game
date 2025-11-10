@@ -21,7 +21,7 @@ class Credits extends Phaser.Scene {
     this.add.text(width / 2, 60, 'Credits', { fontSize: '36px', fill: '#FFFFFF' }).setOrigin(0.5);
 
     const lines = [
-      'Game: Platformer Game',
+      'Game: THE PLATFORMER GAME',
       'Created by: Jason Nguyen and Johnny Vu',
       'Art: AI and ufotable (Kimetsu no Yaiba)',
     ];

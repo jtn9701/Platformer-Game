@@ -58,7 +58,7 @@ class TitleScene extends Phaser.Scene {
         const height = this.game.config.height;
 
         // Game Title
-        this.add.text(width / 2, height / 3, 'PLATFORMER GAME', {
+        this.add.text(width / 2, height / 3, 'THE PLATFORMER GAME', {
             fontSize: '48px',
             fill: '#FFFFFF'
         }).setOrigin(0.5);

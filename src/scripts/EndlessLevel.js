@@ -5,7 +5,7 @@ class EndlessLevel extends Phaser.Scene {
     super(key);
     // TODO: adjust for custom map
     this.map_key = "map1";
-    this.map_json = "level1.json";
+    this.map_json = "level2.json";
   }
 
   // Preload external assets
