@@ -20,6 +20,7 @@ class EndlessLevel extends Phaser.Scene {
     this.load.tilemapTiledJSON(this.map_key, this.map_json);
     const tile_size = { frameWidth: 32, frameHeight: 32 };
     this.load.spritesheet("tiles", "tiles.png", tile_size);
+    this.load.spritesheet("items", "items.png", tile_size);
     // Player Assets
     this.load.image("player", "player.png");
     this.load.spritesheet("attack-up", "up-attack-temp.png", ATTACK_FRAME);
@@ -44,6 +45,7 @@ class EndlessLevel extends Phaser.Scene {
     this.create_map();
     this.create_attack_animation();
     this.create_player();
+    this.create_hazards();
     this.create_enemies();
     this.create_gravity();
     this.create_camera();
@@ -61,6 +63,14 @@ class EndlessLevel extends Phaser.Scene {
     this.game_over();
   }
 
+  setup_objects(objGroup){
+    for(let obj of objGroup) {
+      this.physics.add.existing(obj);
+      obj.body.immovable = true;
+      obj.body.allowGravity = false;
+    }
+  }
+
   //--------------------------------------HELPERS-----------------------------------------//
   //######################################CREATES#########################################//
   create_map() {
@@ -69,6 +79,7 @@ class EndlessLevel extends Phaser.Scene {
     // Arg 1: Tiled tileset name
     // Arg 2: image key loaded
     const groundTiles = this.map.addTilesetImage("tiles", "tiles");
+    const itemTiles = this.map.addTilesetImage("items", "items");
 
     // Arg 1: Tiles layer name or index
     // Arg 2: Tileset
@@ -77,6 +88,7 @@ class EndlessLevel extends Phaser.Scene {
     this.groundLayer = this.map.createLayer("tiles", groundTiles, 0, 0);
 
     const ground_block = { terrain: "block" };
+    
     this.groundLayer.setCollisionByProperty(ground_block);
   }
 
@@ -88,6 +100,18 @@ class EndlessLevel extends Phaser.Scene {
   create_gravity() {
     this.physics.world.gravity.y = 400;
   }
+
+  //Create hazard items from object layer
+  create_hazards(){
+    const hazard1_image = { name: 'hazard1', key: 'items', frame: 2 };
+    this.group_hazard1 = this.map.createFromObjects('items', hazard1_image);
+    this.setup_objects(this.group_hazard1);
+
+    const hazard2_image = { name: 'hazard2', key: 'items', frame: 1 };
+    this.group_hazard2 = this.map.createFromObjects('items', hazard2_image);
+    this.setup_objects(this.group_hazard2);
+  }
+
 
   create_camera() {
     this.cameras.main.startFollow(this.player);
@@ -102,6 +126,8 @@ class EndlessLevel extends Phaser.Scene {
 
   create_collisions() {
     this.physics.add.collider(this.player, this.groundLayer);
+    this.physics.add.overlap(this.player,this.group_hazard1,this.game_over,null,this);
+    this.physics.add.overlap(this.player,this.group_hazard2,this.game_over,null,this);
     this.physics.add.collider(this.group_enemies, this.groundLayer);
     this.physics.add.collider(
       this.player,
@@ -230,13 +256,13 @@ class EndlessLevel extends Phaser.Scene {
     this.score_manager.update_time_alive(1);
     // Update on-screen score display
     if (this.scoreText && this.score_manager) {
-      // Display score that increments only when enemies are killed
-      const displayScore = this.score_manager.get_display_score();
+      // Display score: time alive * enemies killed
+      const displayScore = this.score_manager.get_final_score();
       this.scoreText.setText(`Score: ${displayScore}`);
     }
   }
 
-  game_over(hazard = null) {
+  game_over(player = null, hazard = null) {
     const game_over_actions = () => {
       console.log(this.score_manager.get_final_score());
       this.leader_board_manager.add_new_top_scorer(
