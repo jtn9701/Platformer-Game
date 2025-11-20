@@ -1,6 +1,9 @@
+import { LeaderboardManager } from "./leaderboard-manager.js";
+
 class TitleScene extends Phaser.Scene {
   constructor() {
     super("title"); // Register scene with key 'title'
+    this.leaderboardManager = new LeaderboardManager();
   }
 
   preload() {
@@ -9,7 +12,7 @@ class TitleScene extends Phaser.Scene {
     this.load.image("title-bg", "dark-mountain-forest-1.png");
   }
 
-  create() {
+  async create() {
     const bg = this.add.image(0, 0, "title-bg").setOrigin(0);
     bg.setDisplaySize(this.cameras.main.width, this.cameras.main.height);
     bg.setScrollFactor(0);
@@ -17,7 +20,7 @@ class TitleScene extends Phaser.Scene {
 
     this.create_title();
     this.create_game_data();
-    this.create_topscore();
+    await this.create_topscore();
     this.create_buttons();
 
     // SPACE to play, ESC to open credits
@@ -78,19 +81,40 @@ class TitleScene extends Phaser.Scene {
     this.registry.set("winner", this.registry.get("winner") || "Top Score");
   }
 
-  create_topscore() {
+  async create_topscore() {
     // Get the top score and winner from the registry
-    const topScore = this.registry.get("top_score");
+    const topScorers = await this.leaderboardManager.get_top_scorers();
+    const topScore =
+      topScorers.length > 0 ? topScorers[0] : this.registry.get("top_score");
     const winner = this.registry.get("winner");
 
     // Display the top score
     const x = this.game.config.width / 2;
-    const y = this.game.config.height - 50;
-    this.add
-      .text(x, y, `Leader: ${winner} - ${topScore}`, {
+    const y = this.game.config.height - 200;
+    /*this.add
+      .text(x, y, `Leader: ${topScore.name} - ${topScore.score}`, {
         fontSize: "20px",
         fill: "#FFFFFF",
       })
       .setOrigin(0.5);
+*/
+    // Display each scorer on its own line with vertical spacing
+    const lineSpacing = 24; // pixels between lines
+    const count = 5;
+    for (let i = 0; i < count; i++) {
+      this.add
+        .text(
+          x,
+          y + i * lineSpacing,
+          `${i + 1}: ${topScorers[i].name} - ${topScorers[i].score}`,
+          {
+            fontSize: "20px",
+            fill: "#FFFFFF",
+          }
+        )
+        .setOrigin(0.5);
+    }
   }
 }
+
+export { TitleScene };

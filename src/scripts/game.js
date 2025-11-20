@@ -1,4 +1,5 @@
 import { EndlessLevel } from "./EndlessLevel.js";
+import { TitleScene } from "./TitleScreen.js";
 
 const config = new Object();
 
