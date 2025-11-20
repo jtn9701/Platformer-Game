@@ -6,8 +6,10 @@ const config = new Object();
 config.type = Phaser.CANVAS;
 
 // World size
-config.width = 32 * 24; // 32 px/tile * 96 tile/world
-config.height = 32 * 16; // 32 px/tile * 16 tile/world
+config.width = window.innerWidth;
+//32 * 24; // 32 px/tile * 96 tile/world
+config.height = window.innerHeight;
+//32 * 16; // 32 px/tile * 16 tile/world
 
 // Optimize for pixel art
 config.pixelArt = true;
