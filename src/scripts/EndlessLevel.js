@@ -63,8 +63,8 @@ class EndlessLevel extends Phaser.Scene {
     this.game_over();
   }
 
-  setup_objects(objGroup){
-    for(let obj of objGroup) {
+  setup_objects(objGroup) {
+    for (let obj of objGroup) {
       this.physics.add.existing(obj);
       obj.body.immovable = true;
       obj.body.allowGravity = false;
@@ -88,7 +88,7 @@ class EndlessLevel extends Phaser.Scene {
     this.groundLayer = this.map.createLayer("tiles", groundTiles, 0, 0);
 
     const ground_block = { terrain: "block" };
-    
+
     this.groundLayer.setCollisionByProperty(ground_block);
   }
 
@@ -102,16 +102,15 @@ class EndlessLevel extends Phaser.Scene {
   }
 
   //Create hazard items from object layer
-  create_hazards(){
-    const hazard1_image = { name: 'hazard1', key: 'items', frame: 2 };
-    this.group_hazard1 = this.map.createFromObjects('items', hazard1_image);
+  create_hazards() {
+    const hazard1_image = { name: "hazard1", key: "items", frame: 2 };
+    this.group_hazard1 = this.map.createFromObjects("items", hazard1_image);
     this.setup_objects(this.group_hazard1);
 
-    const hazard2_image = { name: 'hazard2', key: 'items', frame: 1 };
-    this.group_hazard2 = this.map.createFromObjects('items', hazard2_image);
+    const hazard2_image = { name: "hazard2", key: "items", frame: 1 };
+    this.group_hazard2 = this.map.createFromObjects("items", hazard2_image);
     this.setup_objects(this.group_hazard2);
   }
-
 
   create_camera() {
     this.cameras.main.startFollow(this.player);
@@ -126,8 +125,20 @@ class EndlessLevel extends Phaser.Scene {
 
   create_collisions() {
     this.physics.add.collider(this.player, this.groundLayer);
-    this.physics.add.overlap(this.player,this.group_hazard1,this.game_over,null,this);
-    this.physics.add.overlap(this.player,this.group_hazard2,this.game_over,null,this);
+    this.physics.add.overlap(
+      this.player,
+      this.group_hazard1,
+      this.game_over,
+      null,
+      this
+    );
+    this.physics.add.overlap(
+      this.player,
+      this.group_hazard2,
+      this.game_over,
+      null,
+      this
+    );
     this.physics.add.collider(this.group_enemies, this.groundLayer);
     this.physics.add.collider(
       this.player,
@@ -230,7 +241,7 @@ class EndlessLevel extends Phaser.Scene {
     const x = cam.width - 10; // 10px from right edge
     const y = 10; // 10px from top
     this.scoreText = this.add
-      .text(x, y, `Score: 0`, { fontSize: '20px', fill: '#00ff3cff' })
+      .text(x, y, `Score: 0`, { fontSize: "20px", fill: "#00ff3cff" })
       .setOrigin(1, 0)
       .setScrollFactor(0);
   }
