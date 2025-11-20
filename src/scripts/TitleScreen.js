@@ -46,7 +46,7 @@ class TitleScene extends Phaser.Scene {
       { label: "Credits", scene: "credits" },
     ];
 
-    const startY = height / 2 + 80;
+    const startY = height / 2.5 + 80;
     const spacing = 48;
 
     menu.forEach((item, idx) => {
@@ -68,7 +68,7 @@ class TitleScene extends Phaser.Scene {
 
     // Game Title
     this.add
-      .text(width / 2, height / 3, "THE PLATFORMER GAME", {
+      .text(width / 2, height / 4, "THE PLATFORMER GAME", {
         fontSize: "48px",
         fill: "#FFFFFF",
       })
@@ -90,14 +90,8 @@ class TitleScene extends Phaser.Scene {
 
     // Display the top score
     const x = this.game.config.width / 2;
-    const y = this.game.config.height - 200;
-    /*this.add
-      .text(x, y, `Leader: ${topScore.name} - ${topScore.score}`, {
-        fontSize: "20px",
-        fill: "#FFFFFF",
-      })
-      .setOrigin(0.5);
-*/
+    const y = this.game.config.height * 0.8;
+
     // Display each scorer on its own line with vertical spacing
     const lineSpacing = 24; // pixels between lines
     const count = 5;
