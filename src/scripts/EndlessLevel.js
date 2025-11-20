@@ -33,8 +33,8 @@ class EndlessLevel extends Phaser.Scene {
     this.load.spritesheet("attack-right", "right-attack.png", ATTACK_FRAME);
     // Enemy Assets
     this.load.spritesheet("enemy", "enemy.png", {
-      frameWidth: 32,
-      frameHeight: 25,
+      frameWidth: 12,
+      frameHeight: 18,
     });
   }
 
@@ -243,7 +243,7 @@ class EndlessLevel extends Phaser.Scene {
 
     // Score counter text on upper right side of screen
     const cam = this.cameras.main;
-    const x = cam.width - 10; // 10px from right edge
+    const x = cam.width - 50; // 50px from right edge
     const y = 10; // 10px from top
     this.scoreText = this.add
       .text(x, y, `Score: 0`, { fontSize: "20px", fill: "#00ff3cff" })

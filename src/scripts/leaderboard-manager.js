@@ -38,7 +38,11 @@ class LeaderboardManager {
     }
   }
 
-  async add_new_top_scorer(score, player_name = "Anonymous") {
+  async add_new_top_scorer(score) {
+    new_top_scorer =
+      window.prompt("Enter name or leave blank to stay Anonymous").trim() ??
+      "Anonymous";
+
     await this.boot_promise;
     if (!this.booted) {
       console.log("DB is not booted to modify leaderboard.");
@@ -54,7 +58,7 @@ class LeaderboardManager {
 
         new_entry = {
           id: uid(),
-          name: player_name,
+          name: new_top_scorer,
           score: score,
         };
 
