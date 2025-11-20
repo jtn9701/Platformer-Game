@@ -16,6 +16,7 @@ class EndlessLevel extends Phaser.Scene {
     };
     this.load.path = "src/assets/";
     this.load.image("background", "castle2.jpg");
+    this.load.audio("backgroundMusic", "background-music.mp3");
     // Tile Assets
     this.load.tilemapTiledJSON(this.map_key, this.map_json);
     const tile_size = { frameWidth: 32, frameHeight: 32 };
@@ -55,6 +56,7 @@ class EndlessLevel extends Phaser.Scene {
     this.create_player_attack_collision_handler();
     this.create_score_manager();
     this.create_leaderboard_manager();
+    this.create_background_music();
   }
 
   // Update game data
@@ -253,6 +255,14 @@ class EndlessLevel extends Phaser.Scene {
     console.log(this.leader_board_manager.get_top_scorers());
   }
 
+  create_background_music() {
+    this.music = this.sound.add("backgroundMusic", {
+      loop: true,
+      volume: 0.25,
+    });
+    this.music.play();
+  }
+
   //######################################UPDATES#########################################//
   update_player(time) {
     this.player.move();
@@ -276,12 +286,13 @@ class EndlessLevel extends Phaser.Scene {
   }
 
   game_over(player = null, hazard = null) {
-    const game_over_actions = () => {
+    const game_over_actions = async () => {
       console.log(this.score_manager.get_final_score());
       this.leader_board_manager.add_new_top_scorer(
         this.score_manager.get_final_score()
       );
       this.score_manager.reset();
+      await this.music.stop();
       this.scene.restart();
     };
 
