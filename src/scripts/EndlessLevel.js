@@ -57,6 +57,7 @@ class EndlessLevel extends Phaser.Scene {
     this.create_score_manager();
     this.create_leaderboard_manager();
     this.create_background_music();
+    this.create_button_actions();
   }
 
   // Update game data
@@ -261,6 +262,12 @@ class EndlessLevel extends Phaser.Scene {
       volume: 0.25,
     });
     this.music.play();
+  }
+
+  create_button_actions() {
+    this.input.keyboard.on("keydown-ESC", () => {
+      this.scene.start("title");
+    });
   }
 
   //######################################UPDATES#########################################//
