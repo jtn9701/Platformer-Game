@@ -22,15 +22,14 @@ class EndlessLevel extends Phaser.Scene {
     this.load.spritesheet("tiles", "tiles.png", tile_size);
     this.load.spritesheet("items", "items.png", tile_size);
     // Player Assets
-    this.load.image("player", "player.png");
-    this.load.spritesheet("attack-up", "up-attack-temp.png", ATTACK_FRAME);
-    this.load.spritesheet("attack-down", "down-attack-temp.png", ATTACK_FRAME);
-    this.load.spritesheet("attack-left", "left-attack-temp.png", ATTACK_FRAME);
-    this.load.spritesheet(
-      "attack-right",
-      "right-attack-temp.png",
-      ATTACK_FRAME
-    );
+    this.load.spritesheet("player", "main-character/MainCharacter.png", {
+      frameWidth: 14,
+      frameHeight: 20,
+    });
+    this.load.spritesheet("attack-up", "up-attack.png", ATTACK_FRAME);
+    this.load.spritesheet("attack-down", "down-attack.png", ATTACK_FRAME);
+    this.load.spritesheet("attack-left", "left-attack.png", ATTACK_FRAME);
+    this.load.spritesheet("attack-right", "right-attack.png", ATTACK_FRAME);
     // Enemy Assets
     this.load.image("enemy", "enemy.png");
   }

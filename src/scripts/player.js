@@ -2,12 +2,15 @@ class Player extends Phaser.Physics.Arcade.Sprite {
   constructor(scene) {
     super(scene, 0, 0, "player");
 
+    this.setFrame(0);
+
     const start = scene.map.findObject("items", (obj) => obj.name === "player");
     // Player start position
     this.x = start.x;
     this.y = start.y;
     this.setOrigin(0.5, 1);
     this.depth = 1;
+    this.setScale(3.0);
     // Default speed
     this.speed = 200;
 
