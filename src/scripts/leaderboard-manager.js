@@ -39,9 +39,14 @@ class LeaderboardManager {
   }
 
   async add_new_top_scorer(score) {
-    new_top_scorer =
-      window.prompt("Enter name or leave blank to stay Anonymous").trim() ??
-      "Anonymous";
+    let player_name = window.prompt(
+      "Enter name or leave blank to stay Anonymous"
+    );
+    if (player_name) {
+      player_name = player_name.trim();
+    }
+
+    const new_top_scorer = player_name ?? "Anonymous";
 
     await this.boot_promise;
     if (!this.booted) {

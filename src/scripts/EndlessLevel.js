@@ -40,6 +40,7 @@ class EndlessLevel extends Phaser.Scene {
 
   // Create game data
   create() {
+    this.is_game_over = false;
     const bg = this.add.image(0, 0, "background").setOrigin(0);
     bg.setDisplaySize(this.cameras.main.width, this.cameras.main.height);
     bg.setScrollFactor(0);
@@ -292,22 +293,27 @@ class EndlessLevel extends Phaser.Scene {
     }
   }
 
-  game_over(player = null, hazard = null) {
+  async game_over(player = null, hazard = null) {
     const game_over_actions = async () => {
       console.log(this.score_manager.get_final_score());
-      this.leader_board_manager.add_new_top_scorer(
+      await this.leader_board_manager.add_new_top_scorer(
         this.score_manager.get_final_score()
       );
-      this.score_manager.reset();
+      await this.score_manager.reset();
       await this.music.stop();
       this.scene.restart();
     };
+    if (this.is_game_over) {
+      return;
+    }
 
     if (this.player.y > this.map.heightInPixels) {
-      game_over_actions();
+      this.is_game_over = true;
+      await game_over_actions();
     }
     if (hazard !== null) {
-      game_over_actions();
+      this.is_game_over = true;
+      await game_over_actions();
     }
   }
 }
